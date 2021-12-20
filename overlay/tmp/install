@@ -27,7 +27,11 @@ bf-debug "Apache version ${VERSION}."
 
 bf-echo "Installing Apache v${VERSION}..."
 apk add --no-cache \
-    apache2=${VERSION}
+    ca-certificates \
+    apache2=${VERSION} \
+    apache2-ctl=${VERSION} \
+    apache2-http2=${VERSION} \
+    apache2-utils=${VERSION}
 bf-done
 
 
