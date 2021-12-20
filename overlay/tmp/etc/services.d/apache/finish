@@ -1,0 +1,17 @@
+#!/usr/bin/with-contenv sh
+
+set -euo pipefail
+
+
+#======================================================================================================================
+# Ensure Nginx is closed gracefully and use base executable to terminate all services.
+#
+# Nginx flags
+#   -s  send a signal to the master process (quit: shut down server gracefully)
+#======================================================================================================================
+
+#NAME=${PWD##*/}
+#bf-debug "Quitting Nginx." "${NAME}/$(basename ${0})"
+#nginx -s quit
+
+#bf-svc-finish -s ${NAME} -t
