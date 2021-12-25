@@ -4,14 +4,11 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Ensure Nginx is closed gracefully and use base executable to terminate all services.
-#
-# Nginx flags
-#   -s  send a signal to the master process (quit: shut down server gracefully)
+# Ensure Apache is closed gracefully and use base executable to terminate all services.
 #======================================================================================================================
 
-#NAME=${PWD##*/}
-#bf-debug "Quitting Nginx." "${NAME}/$(basename ${0})"
-#nginx -s quit
+NAME=${PWD##*/}
+bf-debug "Quitting Apache." "${NAME}/$(basename ${0})"
+apachectl -k graceful-stop
 
-#bf-svc-finish -s ${NAME} -t
+bf-svc-finish -s ${NAME} -t
