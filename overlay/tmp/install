@@ -32,6 +32,7 @@ apk add --no-cache \
     apache2-ctl=${VERSION} \
     apache2-http2=${VERSION} \
     apache2-utils=${VERSION}
+mkdir -p /var/run/httpd
 bf-done
 
 

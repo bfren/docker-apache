@@ -14,3 +14,7 @@ bf-env "APACHE_WWW" "/www"
 bf-env "APACHE_HELPERS" "/etc/apache2/helpers"
 bf-env "APACHE_MODULES" "/etc/apache2/modules"
 bf-env "APACHE_LOCALHOST_CONF" "/etc/apache2/sites/localhost.conf"
+
+APACHE_RUN_DIR=/var/run/httpd
+bf-env "APACHE_RUN_DIR" "${APACHE_RUN_DIR}"
+bf-env "APACHE_PID_FILE" "${APACHE_RUN_DIR}/httpd.pid"
