@@ -8,7 +8,7 @@ export BF_E="${PWD##*/}/$(basename ${0})"
 # Start Apache as a foreground service, if it isn't already running.
 #======================================================================================================================
 
-if [ ! -z "$(pidof httpd)" ] ; then
+if [ -z "$(pidof httpd)" ] ; then
     bf-echo "Starting Apache in foreground mode."
     apachectl -k start -D FOREGROUND
 fi
