@@ -9,12 +9,12 @@ set -euo pipefail
 #======================================================================================================================
 
 NAME=${PWD##*/}
-if [[ "${BF_APACHE_RESTARTING-}" = "1" ]] ; then
+bf-debug "BF_APACHE_RESTARTING=${BF_APACHE_RESTARTING-}"
+if [ "${BF_APACHE_RESTARTING-}" = "1" ] ; then
     bf-debug "Apache is restarting, do nothing." "${NAME}/$(basename ${0})"
     exit 0
 fi
 
-NAME=${PWD##*/}
 bf-debug "Quitting Apache." "${NAME}/$(basename ${0})"
 apachectl graceful-stop
 
