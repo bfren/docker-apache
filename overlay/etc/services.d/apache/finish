@@ -5,10 +5,19 @@ set -euo pipefail
 
 #======================================================================================================================
 # Ensure Apache is closed gracefully and use base executable to terminate all services.
+# If we are restarting (see /usr/local/bin/apache-restart), do nothing.
 #======================================================================================================================
 
-NAME=${PWD##*/}
-bf-debug "Quitting Apache." "${NAME}/$(basename ${0})"
-apachectl graceful-stop
+if [[ "${BF_APACHE_RESTARTING-}" -ne "1" ]] ; then
 
-bf-svc-finish -s ${NAME} -t
+    NAME=${PWD##*/}
+    bf-debug "Quitting Apache." "${NAME}/$(basename ${0})"
+    apachectl graceful-stop
+
+    bf-svc-finish -s ${NAME} -t
+
+else
+
+    bf-debug "Apache is restarting, do nothing." "${NAME}/$(basename ${0})"
+
+fi

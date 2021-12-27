@@ -5,12 +5,21 @@ set -euo pipefail
 
 #======================================================================================================================
 # Reload Apache - but only if it is running.
+# 'restart' automatically runs 'configtest' first so there's no need to call that manually.
 #======================================================================================================================
 
 if [ ! -z "$(pidof httpd)" ] ; then
+
     bf-echo "Restarting Apache..." "apache-restart"
-    apachectl configtest && apachectl restart
+
+    bf-env "BF_APACHE_RESTARTING" "1"
+    apachectl restart
+
     bf-done "apache-restart"
+    bf-env "BF_APACHE_RESTARTING" "0"
+
 else
+
     bf-debug "Apache is not running." "apache-restart"
+
 fi
