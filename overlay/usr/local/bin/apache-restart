@@ -1,0 +1,16 @@
+#!/usr/bin/with-contenv sh
+
+set -euo pipefail
+
+
+#======================================================================================================================
+# Reload Apache - but only if it is running.
+#======================================================================================================================
+
+if [ ! -z "$(pidof httpd)" ] ; then
+    bf-echo "Restarting Apache..." "apache-restart"
+    apachectl restart
+    bf-done "apache-restart"
+else
+    bf-debug "Apache is not running." "apache-restart"
+fi
