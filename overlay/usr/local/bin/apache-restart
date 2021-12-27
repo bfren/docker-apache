@@ -5,8 +5,7 @@ export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Reload Apache - but only if it is running.
-# 'restart' automatically runs 'configtest' first so there's no need to call that manually.
+# Stop Apache - but only if it is running - and allow S6 to restart it.
 #======================================================================================================================
 
 if [ ! -z "$(pidof httpd)" ] ; then
@@ -14,7 +13,7 @@ if [ ! -z "$(pidof httpd)" ] ; then
     bf-env "BF_APACHE_RESTARTING" "1"
 
     bf-echo "Restarting Apache..."
-    apachectl restart
+    apachectl configtest && apachectl stop
     bf-done
 
 else
