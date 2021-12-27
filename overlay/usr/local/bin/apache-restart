@@ -11,12 +11,12 @@ export BF_E=`basename ${0}`
 
 if [ ! -z "$(pidof httpd)" ] ; then
 
-    bf-echo "Restarting Apache..."
-
     bf-env "BF_APACHE_RESTARTING" "1"
-    exec apachectl restart
 
+    bf-echo "Restarting Apache..."
+    exec apachectl restart
     bf-done
+
     bf-env "BF_APACHE_RESTARTING" "0"
 
 else

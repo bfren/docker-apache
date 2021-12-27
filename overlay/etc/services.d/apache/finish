@@ -8,6 +8,7 @@ set -euo pipefail
 # If we are restarting (see /usr/local/bin/apache-restart), do nothing.
 #======================================================================================================================
 
+NAME=${PWD##*/}
 if [[ "${BF_APACHE_RESTARTING-}" = "1" ]] ; then
     bf-debug "Apache is restarting, do nothing." "${NAME}/$(basename ${0})"
     exit 0
