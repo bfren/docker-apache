@@ -41,7 +41,7 @@ bf-done
 #======================================================================================================================
 
 bf-debug "Cleaning up default Apache configuration and files."
-rm -rf /var/www/html
+rm -rf /var/www/localhost/*
 
 
 #======================================================================================================================
@@ -50,5 +50,5 @@ rm -rf /var/www/html
 
 bf-debug "Creating Apache directories."
 
-bf-debug "Linking /www to /var/www/html."
-ln -s /www /var/www/html
+bf-debug "Linking /www to /var/www/localhost/htdocs."
+ln -s /www /var/www/localhost/htdocs
