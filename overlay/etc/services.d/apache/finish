@@ -12,7 +12,6 @@ NAME=${PWD##*/}
 if [ "${BF_APACHE_RESTARTING-}" = "1" ] ; then
 
     bf-debug "Apache is restarting, do nothing." "${NAME}/$(basename ${0})"
-    bf-env "BF_APACHE_RESTARTING" "0"
 
 else
 
