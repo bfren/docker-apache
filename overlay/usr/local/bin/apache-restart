@@ -14,7 +14,7 @@ if [ ! -z "$(pidof httpd)" ] ; then
     bf-echo "Restarting Apache..."
 
     bf-env "BF_APACHE_RESTARTING" "1"
-    apachectl restart
+    exec apachectl restart
 
     bf-done
     bf-env "BF_APACHE_RESTARTING" "0"
