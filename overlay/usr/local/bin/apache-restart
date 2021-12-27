@@ -9,7 +9,7 @@ set -euo pipefail
 
 if [ ! -z "$(pidof httpd)" ] ; then
     bf-echo "Restarting Apache..." "apache-restart"
-    apachectl restart
+    apachectl configtest && apachectl restart
     bf-done "apache-restart"
 else
     bf-debug "Apache is not running." "apache-restart"

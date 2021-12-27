@@ -9,4 +9,4 @@ export BF_E="${PWD##*/}/$(basename ${0})"
 #======================================================================================================================
 
 bf-echo "Starting Apache in foreground mode."
-httpd -D FOREGROUND
+apachectl -k start -D FOREGROUND

@@ -9,6 +9,6 @@ set -euo pipefail
 
 NAME=${PWD##*/}
 bf-debug "Quitting Apache." "${NAME}/$(basename ${0})"
-apachectl -k graceful-stop
+apachectl graceful-stop
 
 bf-svc-finish -s ${NAME} -t
