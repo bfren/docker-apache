@@ -1,0 +1,23 @@
+#!/usr/bin/with-contenv sh
+
+set -euo pipefail
+
+
+#======================================================================================================================
+# Ensure Apache is closed gracefully and use base executable to terminate all services.
+# If we are restarting (see /usr/local/bin/apache-restart), do nothing.
+#======================================================================================================================
+
+NAME=${PWD##*/}
+if [ "${BF_APACHE_RESTARTING-}" = "1" ] ; then
+
+    bf-debug "Apache is restarting, do nothing." "${NAME}/$(basename ${0})"
+
+else
+
+    bf-debug "Quitting Apache." "${NAME}/$(basename ${0})"
+    apachectl graceful-stop
+
+    bf-svc-finish -s ${NAME} -t
+
+fi
