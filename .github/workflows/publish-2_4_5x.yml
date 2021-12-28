@@ -1,4 +1,4 @@
-name: publish-2_4_50
+name: publish-2_4_5x
 
 on:
   release:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish-2_4_50:
+  publish-2_4_5x:
     runs-on: ubuntu-latest
     steps:
       -
@@ -38,13 +38,13 @@ jobs:
         name: Read Apache version - revision
         uses: bfren/read-file@v1
         with:
-          file: ./2.4.50/APACHE_REVISION
+          file: ./2.4.5x/APACHE_REVISION
         id: apache_revision
       -
         name: Read Apache version - build
         uses: bfren/read-file@v1
         with:
-          file: ./2.4.50/APACHE_BUILD
+          file: ./2.4.5x/APACHE_BUILD
         id: apache_build
       -
         name: Set up QEMU
@@ -64,7 +64,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./2.4.50/Dockerfile
+          file: ./2.4.5x/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
@@ -79,10 +79,10 @@ jobs:
             bfren/apache:apache2-${{ steps.version_major.outputs.contents }}
             bfren/apache:apache2-${{ steps.version_minor.outputs.contents }}
             bfren/apache:apache2-${{ steps.version.outputs.contents }}
-            bfren/apache:apache2.4.50
-            bfren/apache:apache2.4.50-${{ steps.version_major.outputs.contents }}
-            bfren/apache:apache2.4.50-${{ steps.version_minor.outputs.contents }}
-            bfren/apache:apache2.4.50-${{ steps.version.outputs.contents }}
+            bfren/apache:apache2.4.5x
+            bfren/apache:apache2.4.5x-${{ steps.version_major.outputs.contents }}
+            bfren/apache:apache2.4.5x-${{ steps.version_minor.outputs.contents }}
+            bfren/apache:apache2.4.5x-${{ steps.version.outputs.contents }}
             bfren/apache:apache${{ steps.apache_revision.outputs.contents }}
             bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
             bfren/apache:apache${{ steps.apache_build.outputs.contents }}

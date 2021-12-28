@@ -1,4 +1,4 @@
-name: dev-2_4_43
+name: dev-2_4_4x
 
 on:
   push:
@@ -7,13 +7,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-2_4_43:
+  test-2_4_4x:
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout code
         uses: actions/checkout@v2
-  build-2_4_43:
+  build-2_4_4x:
     runs-on: ubuntu-latest
     steps:
       -
@@ -47,15 +47,15 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./2.4.43/Dockerfile
+          file: ./2.4.4x/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
           push: ${{ startsWith(github.ref, 'refs/heads/') }}
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
-            bfren/apache:apache2.4.43-dev
-            bfren/apache:apache2.4.43-${{ steps.version.outputs.contents }}-beta
+            bfren/apache:apache2.4.4x-dev
+            bfren/apache:apache2.4.4x-${{ steps.version.outputs.contents }}-beta
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
