@@ -8,4 +8,4 @@ export BF_E=`basename ${0}`
 # Attempt to load localhost using bf-test-url.
 #======================================================================================================================
 
-bf-test-url http://localhost
+bf-test-url -m full http://localhost
