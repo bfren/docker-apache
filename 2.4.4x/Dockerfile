@@ -6,7 +6,7 @@ ARG BF_VERSION
 EXPOSE 80
 
 COPY ./overlay /
-COPY ./2.4.43/APACHE_BUILD /tmp/VERSION
+COPY ./2.4.4x/APACHE_BUILD /tmp/VERSION
 
 RUN bf-install
 
