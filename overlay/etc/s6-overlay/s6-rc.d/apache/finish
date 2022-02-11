@@ -1,6 +1,7 @@
 #!/command/with-contenv sh
 
 set -euo pipefail
+export BF_E="${PWD##*/}/$(basename ${0})"
 
 
 #======================================================================================================================
@@ -18,6 +19,6 @@ else
     bf-debug "Quitting Apache." "${NAME}/$(basename ${0})"
     apachectl graceful-stop
 
-    bf-svc-finish -s ${NAME} -t
+    bf-svc-finish -t
 
 fi
