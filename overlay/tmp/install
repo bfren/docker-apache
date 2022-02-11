@@ -17,8 +17,8 @@ bf-adduser apache
 
 cd /tmp
 
-VERSION=$(cat VERSION)
-bf-debug "Apache version ${VERSION}."
+VERSION=$(cat APACHE_BUILD)
+bf-echo "Apache version ${VERSION}."
 
 
 #======================================================================================================================
@@ -40,7 +40,7 @@ bf-done
 # Cleanup.
 #======================================================================================================================
 
-bf-debug "Cleaning up default Apache configuration and files."
+bf-echo "Cleaning up default Apache configuration and files."
 rm -rf /var/www/localhost/*
 
 
@@ -48,7 +48,7 @@ rm -rf /var/www/localhost/*
 # Create and link Apache directories.
 #======================================================================================================================
 
-bf-debug "Creating Apache directories."
+bf-echo "Creating Apache directories."
 
-bf-debug "Linking /www to /var/www/localhost/htdocs."
+bf-echo "Linking /www to /var/www/localhost/htdocs."
 ln -s /www /var/www/localhost/htdocs
