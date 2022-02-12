@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv sh
+#!/command/with-contenv sh
 
 set -euo pipefail
 export BF_E=`basename ${0}`
@@ -15,6 +15,6 @@ bf-env "APACHE_HELPERS" "/etc/apache2/helpers"
 bf-env "APACHE_MODULES" "/etc/apache2/modules"
 bf-env "APACHE_LOCALHOST_CONF" "/etc/apache2/sites/localhost.conf"
 
-APACHE_RUN_DIR=/var/run/httpd
+APACHE_RUN_DIR=/run/httpd
 bf-env "APACHE_RUN_DIR" "${APACHE_RUN_DIR}"
 bf-env "APACHE_PID_FILE" "${APACHE_RUN_DIR}/httpd.pid"

@@ -1,2 +1,0 @@
-/etc/apache2 true apache:apache 0400 0555
-/usr/local/bin/apache-* false root:root 0500 0500

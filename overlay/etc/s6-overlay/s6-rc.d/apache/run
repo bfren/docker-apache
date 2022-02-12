@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv sh
+#!/command/with-contenv sh
 
 set -euo pipefail
 export BF_E="${PWD##*/}/$(basename ${0})"
@@ -9,10 +9,14 @@ export BF_E="${PWD##*/}/$(basename ${0})"
 #======================================================================================================================
 
 if [ -z "$(pidof httpd)" ] ; then
+
     bf-echo "Starting Apache in foreground mode."
     apachectl -k start -D FOREGROUND
 
     bf-env "BF_APACHE_RESTARTING" "0"
+
 else
+
     bf-debug "Apache already running."
+
 fi
