@@ -19,10 +19,6 @@
 # will be interpreted as '/logs/access_log'.
 
 #
-# ServerName
-ServerName localhost
-
-#
 # ServerTokens
 # This directive configures what you return as the Server HTTP response
 # Header. The default is 'Full' which sends information about the OS-Type
@@ -63,7 +59,7 @@ ServerRoot /var/www
 # prevent Apache from glomming onto all bound IP addresses.
 #
 #Listen 12.34.56.78:80
-Listen 80
+Listen <%= "${APACHE_LISTEN:-80}" %>
 
 #
 # Dynamic Shared Object (DSO) Support
@@ -221,7 +217,7 @@ ServerSignature On
 #
 # If your host doesn't have a registered DNS name, enter its IP address here.
 #
-ServerName 127.0.0.1:80
+ServerName <%= "${APACHE_SERVER_NAME:-localhost}" %>:<%= "${APACHE_LISTEN:-80}" %>
 
 #
 # Deny access to the entirety of your server's filesystem. You must
