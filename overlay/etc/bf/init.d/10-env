@@ -11,6 +11,7 @@ export BF_E=`basename ${0}`
 bf-env "APACHE_LIB" "${BF_LIB}/apache"
 
 bf-env "APACHE_WWW" "/www"
+bf-env "APACHE_CONF" "/etc/apache2/httpd.conf"
 bf-env "APACHE_HELPERS" "/etc/apache2/helpers"
 bf-env "APACHE_MODULES" "/etc/apache2/modules"
 bf-env "APACHE_LOCALHOST_CONF" "/etc/apache2/sites/localhost.conf"

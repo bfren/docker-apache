@@ -11,7 +11,7 @@ export BF_E="${PWD##*/}/$(basename ${0})"
 if [ -z "$(pidof httpd)" ] ; then
 
     bf-echo "Starting Apache in foreground mode."
-    apachectl -k start -D FOREGROUND
+    apachectl -k start -D FOREGROUND -f "${APACHE_CONF}"
 
     bf-env "BF_APACHE_RESTARTING" "0"
 
