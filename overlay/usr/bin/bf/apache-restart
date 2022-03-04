@@ -16,6 +16,8 @@ if [ ! -z "$(pidof httpd)" ] ; then
     apachectl configtest && apachectl stop
     bf-done
 
+    bf-env "BF_APACHE_RESTARTING" "0"
+
 else
 
     bf-debug "Apache is not running."
