@@ -59,7 +59,7 @@ ServerRoot /var/www
 # prevent Apache from glomming onto all bound IP addresses.
 #
 #Listen 12.34.56.78:80
-Listen 80
+Listen <%= "${APACHE_LISTEN:-80}" %>
 
 #
 # Dynamic Shared Object (DSO) Support
@@ -151,10 +151,10 @@ LoadModule autoindex_module modules/mod_autoindex.so
 #LoadModule info_module modules/mod_info.so
 #LoadModule suexec_module modules/mod_suexec.so
 <IfModule !mpm_prefork_module>
-        #LoadModule cgid_module modules/mod_cgid.so
+    #LoadModule cgid_module modules/mod_cgid.so
 </IfModule>
 <IfModule mpm_prefork_module>
-        #LoadModule cgi_module modules/mod_cgi.so
+    #LoadModule cgi_module modules/mod_cgi.so
 </IfModule>
 #LoadModule vhost_alias_module modules/mod_vhost_alias.so
 #LoadModule negotiation_module modules/mod_negotiation.so
@@ -217,7 +217,7 @@ ServerSignature On
 #
 # If your host doesn't have a registered DNS name, enter its IP address here.
 #
-ServerName 127.0.0.1:80
+ServerName <%= "${APACHE_SERVER_NAME:-localhost}" %>:<%= "${APACHE_LISTEN:-80}" %>
 
 #
 # Deny access to the entirety of your server's filesystem. You must
@@ -241,8 +241,8 @@ ServerName 127.0.0.1:80
 # documents. By default, all requests are taken from this directory, but
 # symbolic links and aliases may be used to point to other locations.
 #
-DocumentRoot "/var/www/localhost/htdocs"
-<Directory "/var/www/localhost/htdocs">
+DocumentRoot "/www"
+<Directory "/www">
     #
     # Possible values for the Options directive are "None", "All",
     # or any combination of:
@@ -357,28 +357,8 @@ LogLevel warn
     # run by the server when requested rather than as documents sent to the
     # client.  The same rules about trailing "/" apply to ScriptAlias
     # directives as to Alias.
-    #
-    ScriptAlias /cgi-bin/ "/var/www/localhost/cgi-bin/"
 
 </IfModule>
-
-<IfModule cgid_module>
-    #
-    # ScriptSock: On threaded servers, designate the path to the UNIX
-    # socket used to communicate with the CGI daemon of mod_cgid.
-    #
-    #Scriptsock cgisock
-</IfModule>
-
-#
-# "/var/www/localhost/cgi-bin" should be changed to whatever your ScriptAliased
-# CGI directory exists, if you have that configured.
-#
-<Directory "/var/www/localhost/cgi-bin">
-    AllowOverride None
-    Options None
-    Require all granted
-</Directory>
 
 <IfModule headers_module>
     #

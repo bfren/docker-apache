@@ -9,3 +9,6 @@ export BF_E=`basename ${0}`
 #======================================================================================================================
 
 bf-echo "Generating Apache configuration files..."
+HTTPD_CONF=httpd.conf
+bf-debug " .. ${HTTPD_CONF}"
+bf-esh ${BF_TEMPLATES}/${HTTPD_CONF}.esh ${APACHE_CONF}

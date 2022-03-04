@@ -33,6 +33,7 @@ apk add --no-cache \
     apache2-http2=${VERSION} \
     apache2-utils=${VERSION}
 mkdir -p /run/httpd
+ln -s /run/httpd /run/apache2
 bf-done
 
 
