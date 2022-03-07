@@ -1,15 +1,16 @@
 #!/bin/sh
 
-VERSION=`cat VERSION`
+IMAGE=`cat VERSION`
+APACHE=${1:-2.4.5x}
 
 git pull || exit 1
 chmod +x run.sh
 
 docker buildx build \
     --build-arg BF_IMAGE=apache \
-    --build-arg BF_VERSION=${VERSION} \
-    -f ${1:-2.4.5x}/Dockerfile \
-    -t apache-dev \
+    --build-arg BF_VERSION=${IMAGE} \
+    -f ${APACHE}/Dockerfile \
+    -t apache${APACHE}-dev \
     . \
     && \
-    docker run -it apache-dev sh
+    docker run -it apache${APACHE}-dev sh
