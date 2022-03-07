@@ -41,12 +41,6 @@ jobs:
           file: ./2.4.4x/APACHE_REVISION
         id: apache_revision
       -
-        name: Read Apache version - build
-        uses: bfren/read-file@v1
-        with:
-          file: ./2.4.4x/APACHE_BUILD
-        id: apache_build
-      -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       -
@@ -77,7 +71,6 @@ jobs:
             bfren/apache:apache2.4.4x-${{ steps.version.outputs.contents }}
             bfren/apache:apache${{ steps.apache_revision.outputs.contents }}
             bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
-            bfren/apache:apache${{ steps.apache_build.outputs.contents }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
