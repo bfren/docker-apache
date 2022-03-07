@@ -71,6 +71,12 @@ jobs:
             bfren/apache:apache2.4.4x-${{ steps.version.outputs.contents }}
             bfren/apache:apache${{ steps.apache_revision.outputs.contents }}
             bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
+            ghcr.io/bfren/apache:apache2.4.4x
+            ghcr.io/bfren/apache:apache2.4.4x-${{ steps.version_major.outputs.contents }}
+            ghcr.io/bfren/apache:apache2.4.4x-${{ steps.version_minor.outputs.contents }}
+            ghcr.io/bfren/apache:apache2.4.4x-${{ steps.version.outputs.contents }}
+            ghcr.io/bfren/apache:apache${{ steps.apache_revision.outputs.contents }}
+            ghcr.io/bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

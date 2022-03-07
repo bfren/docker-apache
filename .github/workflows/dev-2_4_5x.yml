@@ -57,7 +57,9 @@ jobs:
             bfren/apache:${{ steps.version.outputs.contents }}-beta
             bfren/apache:dev
             bfren/apache:apache2.4.5x-dev
-            bfren/apache:apache2.4.5x-${{ steps.version.outputs.contents }}-beta
+            ghcr.io/bfren/apache:apache2.4.5x-${{ steps.version.outputs.contents }}-beta
+            ghcr.io/bfren/apache:apache2.4.5x-dev
+            ghcr.io/bfren/apache:apache2.4.5x-${{ steps.version.outputs.contents }}-beta
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
