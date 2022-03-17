@@ -38,7 +38,7 @@ jobs:
         name: Read Apache version - revision
         uses: bfren/read-file@v1
         with:
-          file: ./2.4.5x/APACHE_REVISION
+          file: ./2.4.5x/overlay/tmp/APACHE_REVISION
         id: apache_revision
       -
         name: Set up QEMU
