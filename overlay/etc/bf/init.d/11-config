@@ -8,7 +8,11 @@ export BF_E=`basename ${0}`
 # Generate configuration files.
 #======================================================================================================================
 
-bf-echo "Generating Apache configuration files..."
-HTTPD_CONF=httpd.conf
-bf-debug " .. ${HTTPD_CONF}"
-bf-esh ${BF_TEMPLATES}/${HTTPD_CONF}.esh ${APACHE_CONF}
+if [[ "${APACHE_USE_CUSTOM_CONF-}" = "1" ]] ; then
+    bf-echo "Apache custom configuration enabled."
+else
+    bf-echo "Generating Apache configuration files..."
+    HTTPD_CONF=httpd.conf
+    bf-debug " .. ${HTTPD_CONF}"
+    bf-esh ${BF_TEMPLATES}/${HTTPD_CONF}.esh ${APACHE_CONF}
+fi
