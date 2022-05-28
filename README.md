@@ -1,6 +1,6 @@
 # Docker Apache
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/bfren/docker-apache) ![Docker Pulls](https://img.shields.io/docker/pulls/bfren/apache?label=pulls) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/bfren/apache/latest?label=size)<br/>
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/bfren/docker-apache) ![Docker Pulls](https://img.shields.io/endpoint?url=https%3A%2F%2Fbfren.dev%2Fdocker%2Fpulls%2Fapache) ![Docker Image Size](https://img.shields.io/endpoint?url=https%3A%2F%2Fbfren.dev%2Fdocker%2Fsize%2Fapache)<br/>
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-apache/dev-2_4_4x?label=Apache+2.4.4x) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-apache/dev-2_4_5x?label=Apache+2.4.5x)
 
 [Docker Repository](https://hub.docker.com/r/bfren/apache) - [bfren ecosystem](https://github.com/bfren/docker)
