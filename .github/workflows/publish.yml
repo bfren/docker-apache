@@ -1,4 +1,4 @@
-name: publish-2_4_5x
+name: publish
 
 on:
   release:
@@ -6,7 +6,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish-2_4_5x:
+  publish:
+    strategy:
+      matrix:
+        apache: [ "2.4.4x", "2.4.5x" ]
     runs-on: ubuntu-latest
     steps:
       -
@@ -38,7 +41,7 @@ jobs:
         name: Read Apache version - revision
         uses: bfren/read-file@v2
         with:
-          file: ./2.4.5x/overlay/tmp/APACHE_REVISION
+          file: ./${{ matrix.apache }}/overlay/tmp/APACHE_REVISION
         id: apache_revision
       -
         name: Set up QEMU
@@ -65,7 +68,33 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./2.4.5x/Dockerfile
+          file: ./${{ matrix.apache }}/Dockerfile
+          build-args: |
+            BF_IMAGE=${{ env.REPOSITORY_NAME }}
+            BF_VERSION=${{ steps.version.outputs.contents }}
+          push: true
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          tags: |
+            bfren/apache:apache${{ matrix.apache }}
+            bfren/apache:apache${{ matrix.apache }}-${{ steps.version_major.outputs.contents }}
+            bfren/apache:apache${{ matrix.apache }}-${{ steps.version_minor.outputs.contents }}
+            bfren/apache:apache${{ matrix.apache }}-${{ steps.version.outputs.contents }}
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
+            ghcr.io/bfren/apache:apache${{ matrix.apache }}
+            ghcr.io/bfren/apache:apache${{ matrix.apache }}-${{ steps.version_major.outputs.contents }}
+            ghcr.io/bfren/apache:apache${{ matrix.apache }}-${{ steps.version_minor.outputs.contents }}
+            ghcr.io/bfren/apache:apache${{ matrix.apache }}-${{ steps.version.outputs.contents }}
+            ghcr.io/bfren/apache:apache${{ steps.apache_revision.outputs.contents }}
+            ghcr.io/bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
+      -
+        name: Build and push default tags
+        id: docker_build_default
+        if: matrix.apache == '2.4.5x'
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./${{ matrix.apache }}/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
@@ -76,30 +105,10 @@ jobs:
             bfren/apache:${{ steps.version_major.outputs.contents }}
             bfren/apache:${{ steps.version_minor.outputs.contents }}
             bfren/apache:${{ steps.version.outputs.contents }}
-            bfren/apache:apache2
-            bfren/apache:apache2-${{ steps.version_major.outputs.contents }}
-            bfren/apache:apache2-${{ steps.version_minor.outputs.contents }}
-            bfren/apache:apache2-${{ steps.version.outputs.contents }}
-            bfren/apache:apache2.4.5x
-            bfren/apache:apache2.4.5x-${{ steps.version_major.outputs.contents }}
-            bfren/apache:apache2.4.5x-${{ steps.version_minor.outputs.contents }}
-            bfren/apache:apache2.4.5x-${{ steps.version.outputs.contents }}
-            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}
-            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
             ghcr.io/bfren/apache:latest
             ghcr.io/bfren/apache:${{ steps.version_major.outputs.contents }}
             ghcr.io/bfren/apache:${{ steps.version_minor.outputs.contents }}
             ghcr.io/bfren/apache:${{ steps.version.outputs.contents }}
-            ghcr.io/bfren/apache:apache2
-            ghcr.io/bfren/apache:apache2-${{ steps.version_major.outputs.contents }}
-            ghcr.io/bfren/apache:apache2-${{ steps.version_minor.outputs.contents }}
-            ghcr.io/bfren/apache:apache2-${{ steps.version.outputs.contents }}
-            ghcr.io/bfren/apache:apache2.4.5x
-            ghcr.io/bfren/apache:apache2.4.5x-${{ steps.version_major.outputs.contents }}
-            ghcr.io/bfren/apache:apache2.4.5x-${{ steps.version_minor.outputs.contents }}
-            ghcr.io/bfren/apache:apache2.4.5x-${{ steps.version.outputs.contents }}
-            ghcr.io/bfren/apache:apache${{ steps.apache_revision.outputs.contents }}
-            ghcr.io/bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

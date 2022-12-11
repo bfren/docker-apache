@@ -1,4 +1,4 @@
-name: dev-2_4_5x
+name: dev
 
 on:
   push:
@@ -7,13 +7,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-2_4_5x:
+  test:
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout code
         uses: actions/checkout@v3
-  build-2_4_5x:
+  build:
+    strategy:
+      matrix:
+        apache: [ "2.4.4x", "2.4.5x" ]
     runs-on: ubuntu-latest
     steps:
       -
@@ -54,19 +57,35 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./2.4.5x/Dockerfile
+          file: ./${{ matrix.apache }}/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
           push: ${{ startsWith(github.ref, 'refs/heads/') }}
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
-            bfren/apache:${{ steps.version.outputs.contents }}-beta
+            bfren/apache:apache${{ matrix.apache }}-dev
+            bfren/apache:apache${{ matrix.apache }}-${{ steps.version.outputs.contents }}-beta
+            ghcr.io/bfren/apache:apache${{ matrix.apache }}-dev
+            ghcr.io/bfren/apache:apache${{ matrix.apache }}-${{ steps.version.outputs.contents }}-beta
+      -
+        name: Build and push default
+        id: docker_build_default
+        if: matrix.apache == '2.4.5x'
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./${{ matrix.apache }}/Dockerfile
+          build-args: |
+            BF_IMAGE=${{ env.REPOSITORY_NAME }}
+            BF_VERSION=${{ steps.version.outputs.contents }}
+          push: ${{ startsWith(github.ref, 'refs/heads/') }}
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          tags: |
             bfren/apache:dev
-            bfren/apache:apache2.4.5x-dev
-            ghcr.io/bfren/apache:apache2.4.5x-${{ steps.version.outputs.contents }}-beta
-            ghcr.io/bfren/apache:apache2.4.5x-dev
-            ghcr.io/bfren/apache:apache2.4.5x-${{ steps.version.outputs.contents }}-beta
+            bfren/apache:${{ steps.version.outputs.contents }}-beta
+            ghcr.io/bfren/apache:dev
+            ghcr.io/bfren/apache:${{ steps.version.outputs.contents }}-beta
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
