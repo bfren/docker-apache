@@ -8,6 +8,7 @@ on:
 jobs:
   publish:
     strategy:
+      fail-fast: false
       matrix:
         apache: [ "2.4.4x", "2.4.5x" ]
     runs-on: ubuntu-latest
