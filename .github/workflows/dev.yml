@@ -46,13 +46,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      -
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v3
@@ -67,8 +60,6 @@ jobs:
           tags: |
             bfren/apache:apache${{ matrix.apache }}-dev
             bfren/apache:apache${{ matrix.apache }}-${{ steps.version.outputs.contents }}-beta
-            ghcr.io/bfren/apache:apache${{ matrix.apache }}-dev
-            ghcr.io/bfren/apache:apache${{ matrix.apache }}-${{ steps.version.outputs.contents }}-beta
       -
         name: Build and push default
         id: docker_build_default
@@ -85,8 +76,6 @@ jobs:
           tags: |
             bfren/apache:dev
             bfren/apache:${{ steps.version.outputs.contents }}-beta
-            ghcr.io/bfren/apache:dev
-            ghcr.io/bfren/apache:${{ steps.version.outputs.contents }}-beta
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
