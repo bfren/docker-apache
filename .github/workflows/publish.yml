@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        apache: [ "2.4.4x", "2.4.5x" ]
+        alpine: [ "3.8", "3.10", "3.13", "3.14", "3.15", "3.16", "3.17", "edge" ]
     runs-on: ubuntu-latest
     steps:
       -
@@ -42,7 +42,7 @@ jobs:
         name: Read Apache version - revision
         uses: bfren/read-file@v2
         with:
-          file: ./${{ matrix.apache }}/overlay/tmp/APACHE_REVISION
+          file: ./alpine${{ matrix.alpine }}/overlay/tmp/APACHE_REVISION
         id: apache_revision
       -
         name: Set up QEMU
@@ -62,27 +62,43 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./${{ matrix.apache }}/Dockerfile
+          file: ./alpine${{ matrix.alpine }}/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
           push: true
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
-            bfren/apache:apache${{ matrix.apache }}
-            bfren/apache:apache${{ matrix.apache }}-${{ steps.version_major.outputs.contents }}
-            bfren/apache:apache${{ matrix.apache }}-${{ steps.version_minor.outputs.contents }}
-            bfren/apache:apache${{ matrix.apache }}-${{ steps.version.outputs.contents }}
-            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}
-            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-alpine${{ matrix.alpine }}
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-alpine${{ matrix.alpine }}-${{ steps.version_major.outputs.contents }}
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-alpine${{ matrix.alpine }}-${{ steps.version_minor.outputs.contents }}
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-alpine${{ matrix.alpine }}-${{ steps.version.outputs.contents }}
       -
-        name: Build and push default tags
-        id: docker_build_default
-        if: matrix.apache == '2.4.5x'
+        name: Build and push default (all Apache versions)
+        id: docker_build_default_all
+        if: matrix.alpine == '3.10' || matrix.alpine == '3.17'
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./${{ matrix.apache }}/Dockerfile
+          file: ./alpine${{ matrix.alpine }}/Dockerfile
+          build-args: |
+            BF_IMAGE=${{ env.REPOSITORY_NAME }}
+            BF_VERSION=${{ steps.version.outputs.contents }}
+          push: true
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          tags: |
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version_major.outputs.contents }}
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version_minor.outputs.contents }}
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
+      -
+        name: Build and push default
+        id: docker_build_default
+        if: matrix.alpine == '3.17'
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./alpine${{ matrix.alpine }}/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}

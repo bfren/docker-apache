@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        apache: [ "2.4.4x", "2.4.5x" ]
+        alpine: [ "3.8", "3.10", "3.13", "3.14", "3.15", "3.16", "3.17", "edge" ]
     runs-on: ubuntu-latest
     steps:
       -
@@ -33,6 +33,12 @@ jobs:
         with:
           file: ./VERSION
         id: version
+      -
+        name: Read Apache version - revision
+        uses: bfren/read-file@v2
+        with:
+          file: ./alpine${{ matrix.alpine }}/overlay/tmp/APACHE_REVISION
+        id: apache_revision
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -51,23 +57,23 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./${{ matrix.apache }}/Dockerfile
+          file: ./alpine${{ matrix.alpine }}/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
           push: ${{ startsWith(github.ref, 'refs/heads/') }}
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
-            bfren/apache:apache${{ matrix.apache }}-dev
-            bfren/apache:apache${{ matrix.apache }}-${{ steps.version.outputs.contents }}-beta
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-alpine${{ matrix.alpine }}-dev
+            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-alpine${{ matrix.alpine }}-${{ steps.version.outputs.contents }}-beta
       -
         name: Build and push default
         id: docker_build_default
-        if: matrix.apache == '2.4.5x'
+        if: matrix.alpine == '3.17'
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./${{ matrix.apache }}/Dockerfile
+          file: ./alpine${{ matrix.alpine }}/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
