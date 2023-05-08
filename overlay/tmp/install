@@ -51,5 +51,5 @@ rm -rf /var/www/localhost/*
 
 bf-echo "Creating Apache directories."
 
-bf-echo "Linking /www to /var/www/localhost/htdocs."
-ln -s /www /var/www/localhost/htdocs
+bf-echo "Linking /www to /var/www/localhost."
+ln -s /www /var/www/localhost
