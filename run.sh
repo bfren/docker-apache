@@ -6,7 +6,7 @@ ALPINE=${1:-3.17}
 docker buildx build \
     --build-arg BF_IMAGE=apache \
     --build-arg BF_VERSION=${IMAGE} \
-    -f ${ALPINE}/Dockerfile \
+    -f alpine${ALPINE}/Dockerfile \
     -t apache-alpine${ALPINE}-dev \
     . \
     && \
