@@ -4,14 +4,14 @@ set -euo pipefail
 
 docker pull bfren/alpine
 
-BASE_REVISION="4.4.16"
+BASE_REVISION="4.4.17"
 echo "Base: ${BASE_REVISION}"
 
-APACHE_VERSIONS="2.4.4x 2.4.5x"
-for V in ${APACHE_VERSIONS} ; do
+ALPINE_VERSIONS="3.8 3.10 3.13 3.14 3.15 3.16 3.17 edge"
+for V in ${ALPINE_VERSIONS} ; do
 
-    echo "Apache ${V}"
-    ALPINE_MINOR=`cat ./${V}/ALPINE_MINOR`
+    echo "Apache for Alpine ${V}"
+    APACHE_REVISION=`cat ./alpine${V}/overlay/tmp/APACHE_REVISION`
 
     DOCKERFILE=$(docker run \
         -v ${PWD}:/ws \
@@ -19,11 +19,11 @@ for V in ${APACHE_VERSIONS} ; do
         bfren/alpine esh \
         "/ws/Dockerfile.esh" \
         BASE_REVISION=${BASE_REVISION} \
-        ALPINE_MINOR=${ALPINE_MINOR} \
-        APACHE_MINOR=${V}
+        ALPINE_MINOR=${V} \
+        APACHE_REVISION=${APACHE_REVISION}
     )
 
-    echo "${DOCKERFILE}" > ./${V}/Dockerfile
+    echo "${DOCKERFILE}" > ./alpine${V}/Dockerfile
 
 done
 

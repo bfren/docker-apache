@@ -1,4 +1,4 @@
-FROM bfren/alpine-s6:alpine<%= ${ALPINE_MINOR} %>-<%= ${BASE_REVISION} %>
+FROM bfren/alpine-s6:alpineedge-4.4.17
 
 LABEL org.opencontainers.image.source="https://github.com/bfren/docker-apache"
 
@@ -13,7 +13,7 @@ ENV \
     APACHE_USE_CUSTOM_CONF=0
 
 COPY ./overlay /
-COPY ./alpine<%= ${ALPINE_MINOR} %>/overlay /
+COPY ./alpineedge/overlay /
 
 RUN bf-install
 
