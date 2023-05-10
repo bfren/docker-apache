@@ -1,4 +1,4 @@
-FROM bfren/alpine-s6:alpine3.15-4.5.0
+FROM bfren/alpine-s6:alpine3.18-4.5.0
 
 LABEL org.opencontainers.image.source="https://github.com/bfren/docker-apache"
 
@@ -13,7 +13,7 @@ ENV \
     APACHE_USE_CUSTOM_CONF=0
 
 COPY ./overlay /
-COPY ./alpine3.15/overlay /
+COPY ./alpine3.18/overlay /
 
 RUN bf-install
 
