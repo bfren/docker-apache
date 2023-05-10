@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        alpine: [ "3.8", "3.10", "3.13", "3.14", "3.15", "3.16", "3.17", "edge" ]
+        alpine: [ "3.8", "3.10", "3.13", "3.14", "3.15", "3.16", "3.17", "3.18", "edge" ]
     runs-on: ubuntu-latest
     steps:
       -
@@ -76,7 +76,7 @@ jobs:
       -
         name: Build and push default (all Apache versions)
         id: docker_build_default_all
-        if: matrix.alpine == '3.10' || matrix.alpine == '3.17'
+        if: matrix.alpine == '3.10' || matrix.alpine == '3.18'
         uses: docker/build-push-action@v4
         with:
           context: .
