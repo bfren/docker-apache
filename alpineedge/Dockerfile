@@ -1,4 +1,4 @@
-FROM bfren/alpine-s6:alpineedge-4.5.4
+FROM bfren/alpine-s6:alpineedge-4.5.5
 
 LABEL org.opencontainers.image.source="https://github.com/bfren/docker-apache"
 
