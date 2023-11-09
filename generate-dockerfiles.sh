@@ -19,7 +19,7 @@ for V in ${ALPINE_EDITIONS} ; do
         bfren/alpine esh \
         "/ws/Dockerfile.esh" \
         BASE_VERSION=${BASE_VERSION} \
-        ALPINE_MINOR=${V} \
+        ALPINE_EDITION=${V} \
         APACHE_REVISION=${APACHE_REVISION}
     )
 
