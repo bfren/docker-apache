@@ -1,14 +1,15 @@
 #!/bin/sh
 
 IMAGE=`cat VERSION`
-ALPINE=${1:-3.17}
+ALPINE=${1:-3.18}
 
 docker buildx build \
     --load \
+    --progress plain \
     --build-arg BF_IMAGE=apache \
     --build-arg BF_VERSION=${IMAGE} \
     -f alpine${ALPINE}/Dockerfile \
     -t apache-alpine${ALPINE}-dev \
     . \
     && \
-    docker run -it apache-alpine${ALPINE}-dev sh
+    docker run -it -e BF_DEBUG=1 apache-alpine${ALPINE}-dev sh

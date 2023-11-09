@@ -1,20 +1,21 @@
-#!/command/with-contenv sh
+#!/bin/withenv sh
 
 set -euo pipefail
-export BF_E="${PWD##*/}/$(basename ${0})"
 
 
 #======================================================================================================================
-# Start Apache as a foreground service, if it isn't already running.
+# Run preflight checks
 #======================================================================================================================
 
-if [ -z "`pidof httpd`" ] ; then
+nu -c "use bf-apache run ; run preflight"
 
-    bf-echo "Starting Apache in foreground mode."
-    apachectl start -D FOREGROUND -f "${APACHE_CONF}"
 
-else
+#======================================================================================================================
+# Start Apache as a foreground service
+#
+# Flags:
+#   -D  set daemon mode
+#   -f  set configuration file path
+#======================================================================================================================
 
-    bf-debug "Apache already running."
-
-fi
+apachectl start -D FOREGROUND -f "${BF_APACHE_CONF}"
