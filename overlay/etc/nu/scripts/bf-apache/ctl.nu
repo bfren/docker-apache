@@ -8,7 +8,7 @@ const restarting = "APACHE_RESTARTING"
 # Returns true if the Apache service is restarting
 export def is_restarting [] { bf env check $restarting }
 
-# Returns true if the Apache service is running
+# Returns true if the Apache server is running
 export def is_up [] { { ^pidof httpd } | bf handle -i | $in != "" }
 
 # Restart Apache using apachectl
