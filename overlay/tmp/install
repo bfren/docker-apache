@@ -9,7 +9,7 @@ def main [] {
 
     # get Apache version and install with dependencies
     cd /tmp
-    let version = bf fs read ./APACHE_BUILD
+    let version = bf fs read APACHE_BUILD
     bf write $"Installing Apache v($version)."
     bf pkg install [
         "ca-certificates"
