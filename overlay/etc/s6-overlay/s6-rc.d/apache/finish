@@ -1,24 +1,22 @@
-#!/command/with-contenv sh
+#!/usr/bin/nu
 
-set -euo pipefail
-export BF_E="${PWD##*/}/$(basename ${0})"
+use bf
+use bf-apache
+use bf-s6
+bf env load -x apache
 
-
-#======================================================================================================================
 # Ensure Apache is closed gracefully and use base executable to terminate all services.
-# If we are restarting (see /usr/local/bin/apache-restart), do nothing.
-#======================================================================================================================
+# If we are restarting, do nothing.
+def main [...args] {
+    # if Apache is marked as being restarted, do nothing
+    if (bf-apache ctl is_restarting) {
+        bf write debug "Apache is restarting, do not terminate container."
+        return
+    }
 
-NAME=${PWD##*/}
-if [ "${BF_APACHE_RESTARTING-}" = "1" ] ; then
+    # ensure Apache is stopped gracefully
+    bf-apache ctl stop
 
-    bf-debug "Apache is restarting, do nothing." "${NAME}/$(basename ${0})"
-
-else
-
-    bf-debug "Quitting Apache." "${NAME}/$(basename ${0})"
-    apachectl graceful-stop
-
-    bf-svc-finish -t
-
-fi
+    # finish and terminate container
+    bf-s6 svc finish --terminate
+}

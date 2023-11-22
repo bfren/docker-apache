@@ -1,25 +1,8 @@
-#!/command/with-contenv sh
+#!/usr/bin/nu
 
-set -euo pipefail
-export BF_E=`basename ${0}`
+use bf
+use bf-apache
+bf env load -x
 
-
-#======================================================================================================================
-# Stop Apache - but only if it is running - and allow S6 to restart it.
-#======================================================================================================================
-
-if [ ! -z "$(pidof httpd)" ] ; then
-
-    bf-env "BF_APACHE_RESTARTING" "1"
-
-    bf-echo "Restarting Apache..."
-    apachectl configtest && apachectl stop
-    bf-done
-
-    bf-env "BF_APACHE_RESTARTING" "0"
-
-else
-
-    bf-debug "Apache is not running."
-
-fi
+# Restart Apache
+def main [] { bf-apache ctl restart }

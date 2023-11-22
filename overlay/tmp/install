@@ -1,55 +1,44 @@
-#!/bin/sh
+#!/usr/bin/nu
 
-set -euo pipefail
-export BF_E=`basename ${0}`
+use bf
 
+# Setup and install Apache
+def main [] {
+    # add apache user
+    bf user add apache
 
-#======================================================================================================================
-# Add apache user.
-#======================================================================================================================
+    # get Apache version and install with dependencies
+    cd /tmp
+    let version = bf fs read APACHE_BUILD
+    bf write $"Installing Apache v($version)."
+    bf pkg install [
+        "ca-certificates"
+        $"apache2=($version)"
+        $"apache2-brotli=($version)"
+        $"apache2-ctl=($version)"
+        $"apache2-http2=($version)"
+        $"apache2-utils=($version)"
+    ]
 
-bf-adduser apache
+    # save Apache version to build log
+    bf build add Apache $version
 
+    # clear default Apache directories
+    bf write "Cleaning up default Apache files."
+    bf del force "/var/www/localhost/*"
 
-#======================================================================================================================
-# Get Apache Version.
-#======================================================================================================================
+    # ensure run directories exist
+    bf write "Creating Apache directories."
+    mkdir /run/httpd
+    ^ln -s /run/httpd /run/apache2
 
-cd /tmp
+    # link root directory
+    bf write "Linking www directories."
+    let www = "/www"
+    let localhost = "/var/www/localhost"
+    bf write $"Linking ($www) to ($localhost)."
+    ln -s $www $localhost
 
-VERSION=$(cat APACHE_BUILD)
-bf-echo "Apache version ${VERSION}."
-
-
-#======================================================================================================================
-# Install Apache and dependencies.
-#======================================================================================================================
-
-bf-echo "Installing Apache v${VERSION}..."
-apk add --no-cache \
-    ca-certificates \
-    apache2=${VERSION} \
-    apache2-ctl=${VERSION} \
-    apache2-http2=${VERSION} \
-    apache2-utils=${VERSION}
-mkdir -p /run/httpd
-ln -s /run/httpd /run/apache2
-bf-done
-
-
-#======================================================================================================================
-# Cleanup.
-#======================================================================================================================
-
-bf-echo "Cleaning up default Apache configuration and files."
-rm -rf /var/www/localhost/*
-
-
-#======================================================================================================================
-# Create and link Apache directories.
-#======================================================================================================================
-
-bf-echo "Creating Apache directories."
-
-bf-echo "Linking /www to /var/www/localhost."
-ln -s /www /var/www/localhost
+    # add bf-apache module to config
+    bf config use bf-apache
+}

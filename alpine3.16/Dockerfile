@@ -1,4 +1,4 @@
-FROM bfren/alpine-s6:alpine3.16-4.5.9
+FROM bfren/alpine-s6:alpine3.16-5.0.0
 
 LABEL org.opencontainers.image.source="https://github.com/bfren/docker-apache"
 
@@ -7,13 +7,13 @@ ARG BF_VERSION
 
 EXPOSE 80
 
+COPY ./overlay /
+COPY ./alpine3.16/overlay /
+
 ENV \
     # set to 1 if you want to stop the container generating default httpd.conf at startup -
     # if you do this you'll need to provide your own using a bind point
-    APACHE_USE_CUSTOM_CONF=0
-
-COPY ./overlay /
-COPY ./alpine3.16/overlay /
+    BF_APACHE_USE_CUSTOM_CONF=0
 
 RUN bf-install
 
