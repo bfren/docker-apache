@@ -1,4 +1,4 @@
-#!/command/with-contenv sh
+#!/bin/withenv sh
 
 set -euo pipefail
 export BF_E=`basename ${0}`
