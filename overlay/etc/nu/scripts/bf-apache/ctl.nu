@@ -9,7 +9,7 @@ const restarting = "APACHE_RESTARTING"
 export def is_restarting [] { bf env check $restarting }
 
 # Returns true if the Apache server is running
-export def is_up [] { { ^pidof httpd } | bf handle -i | $in != "" }
+export def is_up [] { { ^pidof httpd } | bf handle -i ctl/is_up | $in != "" }
 
 # Restart Apache using apachectl
 export def restart [] {
@@ -40,5 +40,5 @@ export def --env starting [] { bf env unset $restarting }
 # Stop the Apache service gracefully
 export def stop [] {
     bf write debug "Stopping Apache." ctl/stop
-    { ^apachectl graceful-stop } | bf handle
+    { ^apachectl graceful-stop } | bf handle ctl/stop
 }
