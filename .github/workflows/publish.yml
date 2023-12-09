@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        alpine: [ "3.15", "3.16", "3.17", "3.18" ]
+        alpine: [ "3.15", "3.16", "3.17", "3.18", "3.19" ]
     runs-on: ubuntu-latest
     steps:
       -
@@ -74,27 +74,9 @@ jobs:
             bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-alpine${{ matrix.alpine }}-${{ steps.version_minor.outputs.contents }}
             bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-alpine${{ matrix.alpine }}-${{ steps.version.outputs.contents }}
       -
-        name: Build and push default (all Apache versions)
-        id: docker_build_default_all
-        if: matrix.alpine == '3.10' || matrix.alpine == '3.18'
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./alpine${{ matrix.alpine }}/Dockerfile
-          build-args: |
-            BF_IMAGE=${{ env.REPOSITORY_NAME }}
-            BF_VERSION=${{ steps.version.outputs.contents }}
-          push: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
-          tags: |
-            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}
-            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version_major.outputs.contents }}
-            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version_minor.outputs.contents }}
-            bfren/apache:apache${{ steps.apache_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
-      -
         name: Build and push default
         id: docker_build_default
-        if: matrix.alpine == '3.17'
+        if: matrix.alpine == '3.19'
         uses: docker/build-push-action@v5
         with:
           context: .
