@@ -7,7 +7,7 @@ docker pull bfren/alpine
 BASE_VERSION="5.3.1"
 echo "Base: ${BASE_VERSION}"
 
-ALPINE_EDITIONS="3.15 3.16 3.17 3.18 3.19"
+ALPINE_EDITIONS="3.15 3.16 3.17 3.18 3.19 3.20"
 for V in ${ALPINE_EDITIONS} ; do
 
     echo "Apache for Alpine ${V}"
