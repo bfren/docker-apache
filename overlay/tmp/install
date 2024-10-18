@@ -25,7 +25,7 @@ def main [] {
 
     # clear default Apache directories
     bf write "Cleaning up default Apache files."
-    bf del force "/var/www/localhost/*"
+    rm --force --recursive /var/www/localhost/*
 
     # ensure run directories exist
     bf write "Creating Apache directories."
