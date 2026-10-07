@@ -40,5 +40,5 @@ def main [] {
     ln -s $www $localhost
 
     # add bf-apache module to config
-    bf config use bf-apache
+    bf config use_mod bf-apache
 }
