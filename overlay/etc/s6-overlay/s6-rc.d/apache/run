@@ -18,4 +18,4 @@ nu -c "use bf-apache run ; run preflight"
 #   -f  set configuration file path
 #======================================================================================================================
 
-apachectl start -D FOREGROUND -f "${BF_APACHE_CONF}"
+exec httpd -D FOREGROUND -f "${BF_APACHE_CONF}"
