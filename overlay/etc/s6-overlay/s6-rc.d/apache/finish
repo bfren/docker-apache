@@ -5,8 +5,8 @@ use bf-apache
 use bf-s6
 bf env load -x apache
 
-# Ensure Apache is closed gracefully and use base executable to terminate all services.
-# If we are restarting, do nothing.
+# Terminate container if Apache failed - if we are restarting, do nothing.
+# Apache itself is stopped by s6, which sends httpd its down signal (SIGTERM by default)
 def main [...args] {
     # if Apache is marked as being restarted, do nothing
     if (bf-apache ctl is_restarting) {
@@ -14,9 +14,6 @@ def main [...args] {
         return
     }
 
-    # ensure Apache is stopped gracefully
-    bf-apache ctl stop
-
     # finish and terminate container
-    bf-s6 svc finish --terminate
+    bf-s6 svc finish --terminate ...$args
 }
