@@ -1,21 +1,36 @@
-#!/bin/withenv sh
+#!/usr/bin/nu
 
-set -euo pipefail
+use bf
+use bf-apache [conf ctl]
+use bf-s6
+bf env load
 
-
-#======================================================================================================================
-# Run preflight checks
-#======================================================================================================================
-
-nu -c "use bf-apache run ; run preflight"
-
-
-#======================================================================================================================
 # Start Apache as a foreground service
-#
-# Flags:
-#   -D  set daemon mode
-#   -f  set configuration file path
-#======================================================================================================================
+def main [
+    name: string    # The service name, passed by s6-supervise
+] {
+    # set executable name - used to make log output more useful
+    bf env x_set --override run $name
 
-exec httpd -D FOREGROUND -f "${BF_APACHE_CONF}"
+    # run checks before executing service
+    ctl starting
+
+    # if Apache is already running, exit gracefully
+    if (ctl is_up) {
+        bf write debug "Apache is already running."
+        exit 0
+    }
+
+    # test Apache configuration
+    conf test
+
+    # flags:
+    #   -D  set daemon mode
+    #   -f  set configuration file path
+    bf write "Starting Apache in foreground mode."
+    let args = [
+        "-D" "FOREGROUND"
+        "-f" (bf env APACHE_CONF)
+    ]
+    bf-s6 svc launch httpd ...$args
+}
