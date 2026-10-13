@@ -1,4 +1,5 @@
 use bf
+use bf-s6
 bf env load
 
 # Generate Apache configuration
@@ -11,5 +12,5 @@ def main [] {
 
     # generate configuration from template
     bf write "Generating Apache configuration."
-    bf esh template $"(bf env APACHE_CONF)"
+    bf-s6 esh template $"(bf env APACHE_CONF)"
 }

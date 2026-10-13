@@ -1,4 +1,5 @@
 use bf
+use bf-s6
 bf env load
 
 # Ensure the htdocs directory exists
@@ -15,7 +16,7 @@ def main [] {
     bf write $"Creating ($htdocs)."
     mkdir $htdocs
     cp $"(bf env ETC_SRC)/index.html" $htdocs
-    bf ch apply_file "11-apache-www"
+    bf-s6 ch apply_file "11-apache-www"
 
     # return nothing
     return
